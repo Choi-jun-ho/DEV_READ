@@ -1,0 +1,111 @@
+0) 개발환경
+
+단축키s
+1. 컴파일 >  ctrl + alt + c 
+2. 실행 > ctrl + alt + r
+
+컴파일 방법
+1. README 폴더 안에 CMakeLists.txt를 프로젝트 안에 복사해서 붙여넣는다.
+2. 이후 컴파일, 실행, 디버그 순서 상관없이 가능함
+
+주의
+1. 폴더 및 파일 이름에 한글, 뛰어쓰기,.등 대부분 특수기호 금지 오류남. 단 -(middlebar),_(underbar)는 두개는 사용 가능
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+{
+    // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
+    // 기존 특성에 대한 설명을 보려면 가리킵니다.
+    // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "cd ${fileDirname} && cmake . -G \"MinGW Makefiles\" && mingw32-make - 활성 파일 빌드 및 디버그",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${fileDirname}\\${fileDirnameBasename}",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${fileDirname}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "D:\\MinGW64\\mingw64\\bin\\gdb.exe",
+            "setupCommands": [
+                {
+                    "description": "gdb에 자동 서식 지정 사용",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "compile for C++"
+        }
+    ]
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+tasks.json 파일
+{
+    "version": "2.0.0",
+    "runner": "terminal",
+    "type": "shell",
+    "echoCommand": true,
+    "presentation" : { "reveal": "always" },
+    "tasks": [
+          //C++ 컴파일
+          {
+            "label": "compile for C++",
+            "command": "cd ${fileDirname} && cmake . -G \"MinGW Makefiles\" && mingw32-make",
+            "group": "build",
+
+            //컴파일시 에러를 편집기에 반영
+            //참고:   https://code.visualstudio.com/docs/editor/tasks#_defining-a-problem-matcher
+
+            "problemMatcher": {
+                "fileLocation": [
+                    "relative",
+                    "${workspaceRoot}"
+                ],
+                "pattern": {
+                    // The regular expression. 
+                   //Example to match: helloWorld.c:5:3: warning: implicit declaration of function 'prinft'
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        // 바이너리 실행(Windows)
+        {
+            "label": "execute",
+            "command": "cmd",
+            "group": "test",
+            "args": [
+                "/C", "${fileDirname}\\${fileDirnameBasename}"
+            ]
+        }
+    ]
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CMakeLists.txt 파일
+
+cmake_minimum_required(VERSION 3.0)
+
+set(CMAKE_BUILD_TYPE Debug)
+
+get_filename_component(ProjectId ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+string(REPLACE " " "_" ProjectId ${ProjectId})
+project(${ProjectId})
+
+set (CMAKE_CXX_STANDARD 11)
+
+file(GLOB SOURCES  *.cpp)
+
+add_executable(${PROJECT_NAME} ${SOURCES} )
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,33 @@
+1. git Repository 생성하기
+2. Wroking Directory 생성하기
+ ㄴ 작업공간을 생성하기 그냥 깃허브와 동기화 시킬 폴더를 자신의 컴퓨터에 생성한다고 생각하면 쉬움
+3. git config
+   git config --global user.name "닉네임" > 명령어 입력
+   git config --global user.email "이메일" > 명령어 입력
+
+4. git init > 명령어를 입력
+   ㄴ 깃 저장소 생성
+       ㄴ 작업공간에 .git 파일이 생성완료됨
+5. 작업공간에 파일 추가
+  ex) README.md 파일 추가
+6. git add
+   ㄴ git add * > 명령어를 입력
+      git add 파일명 > 명령어를 입력
+7. git commit -m "message"  > 명령어를 입력
+  ㄴ 커밋 메세지 입력
+8. git remote add origin "remote reposiory url"  > 명령어를 입력
+  ㄴ 첫 커밋시 입력 
+  ㄴ 오류 fatal: remote origin already exists 해결방법
+      ㄴ 1. git remote rm origin > 명령어 입력 후 
+      ㄴ 2. git remote add origin "remote reposiory url"  > 명령어를 입력
+9. git push -u origin master > 명령어 입력
+  ㄴ 성공시 창 하나 뜨면서 비밀번호 입력하라고 뜨는데 인터넷에서 하는걸 추천
+  ㄴ 오류 git the requested URL returend error : 403 해결방법 (오류난 이유 : 인증이 안되서)
+       ㄴ 1. git remote set-url origin https://github-username@github.com/github-username/github-repository-name.git > 명령어 입력후
+       ㄴ 2. git push -u origin master > 명령어 입력
+
+처음이 아니면 
+3~9까지 8뺴고 반복하면 됨
+
+주의1. 깃허브 홈페이지에서 변경하면 컴퓨터 로컬에 있는 저장소와 깃허브 원격저장소간에 차이가 있어서 오류가 남
+ ㄴ 해결 방법 로컬 삭제후 클론을 만들어서 다시 하면 됨
